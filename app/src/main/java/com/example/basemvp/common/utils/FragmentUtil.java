@@ -114,7 +114,6 @@ public class FragmentUtil {
     }
 
     /**
-     *
      * @param parentFragment
      * @param childFragment
      * @param container
@@ -128,11 +127,66 @@ public class FragmentUtil {
     }
 
     /**
+     * Back fragment with name
      *
      * @param fragmentManager
      * @param fragmentName
      */
-    public static void backFragmentWithName(FragmentManager fragmentManager, String fragmentName){
-
+    public static void backFragmentWithName(FragmentManager fragmentManager, String fragmentName) {
+        while (fragmentManager.getBackStackEntryCount() > 1) {
+            if (fragmentManager.getBackStackEntryAt(
+                    fragmentManager.getBackStackEntryCount() - 1).getName().equals(fragmentName)) {
+                return;
+            }
+            try {
+                fragmentManager.popBackStackImmediate();
+            } catch (IllegalStateException ex) {
+                ex.getMessage();
+            }
+        }
     }
+
+    /**
+     * @param fragmentManager
+     * @param index
+     * @return Fragment with index
+     */
+    public Fragment getFragmentBackStack(FragmentManager fragmentManager, int index) {
+        String FRAGMENT_TAG = fragmentManager.getBackStackEntryAt(index).getName();
+        return fragmentManager.findFragmentByTag(FRAGMENT_TAG);
+    }
+
+    /**
+     * @param fragmentManager
+     * @param fragment
+     * @param viewContainer
+     */
+    public void replaceFragmentAfterResetBackstack(FragmentManager fragmentManager, Fragment fragment, int viewContainer) {
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
+        replaceFragment(fragmentManager, fragment, viewContainer);
+    }
+
+    /**
+     * Reset backstack
+     *
+     * @param fragmentManager
+     */
+    public void resetBackStack(FragmentManager fragmentManager) {
+        while (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStackImmediate();
+        }
+    }
+
+    /**
+     * Back to main
+     * @param fragmentManager
+     */
+    public void backStackToMain(FragmentManager fragmentManager) {
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount() - 1; ++i) {
+            fragmentManager.popBackStack();
+        }
+    }
+
 }
