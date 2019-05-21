@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.basemvp.R;
+import com.example.basemvp.common.utils.DialogUtils;
 import com.example.basemvp.common.utils.LogUtils;
 import com.example.basemvp.network.response.BaseResponse;
 
@@ -22,7 +23,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     protected abstract int getLayoutId();
 
-    protected abstract void setupData();
+    protected abstract void initData();
 
     protected Boolean mIsBackPress = true;
 
@@ -49,7 +50,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupData();
+        initData();
     }
 
     @Override
@@ -93,12 +94,12 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void hideLoading() {
-
+        hideLoadingDialog();
     }
 
     @Override
     public void showLoading() {
-
+        showLoadingDialog(true);
     }
 
     @Override
@@ -150,5 +151,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public Boolean onBackPressed() {
         return mIsBackPress;
+    }
+
+
+    public void internetRequest() {
+        DialogUtils.showDialogMessage(baseActivity, getString(R.string.msg_request_no_internet));
     }
 }
