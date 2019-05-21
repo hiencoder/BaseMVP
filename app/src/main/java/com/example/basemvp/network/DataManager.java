@@ -17,4 +17,5 @@ public class DataManager extends ApiClient {
         return getClient().loginAccount(mail, pass);
     }
 
+
 }
